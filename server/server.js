@@ -43,6 +43,8 @@ app.get('/test', (req, res) => {
 
 app.get('/api/test-db', async (req, res) => {
   try {
+    await connectDB()
+
     const users = await getUsersCollection().countDocuments()
     const rooms = await getRoomsCollection().countDocuments()
     const bookings = await getBookingsCollection().countDocuments()
