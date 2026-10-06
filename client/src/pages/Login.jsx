@@ -28,6 +28,19 @@ function Login() {
     }))
   }
 
+  async function loadAuthenticatedUser() {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/auth/me`,
+      {
+        withCredentials: true,
+      }
+    )
+
+    setUser(response.data.user)
+
+    return response.data.user
+  }
+
   async function handleSubmit(event) {
     event.preventDefault()
 
@@ -47,9 +60,7 @@ function Login() {
         }
       )
 
-      const loggedInUser = response.data.user
-
-      setUser(loggedInUser)
+      await loadAuthenticatedUser()
 
       toast.success(response.data.message)
 
@@ -60,6 +71,8 @@ function Login() {
         'Login failed. Please try again.'
 
       toast.error(message)
+
+      setUser(null)
     } finally {
       setLoading(false)
     }
@@ -69,7 +82,7 @@ function Login() {
     try {
       setGoogleLoading(true)
 
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/google`,
         {
           credential: credentialResponse.credential,
@@ -79,9 +92,9 @@ function Login() {
         }
       )
 
-      setUser(response.data.user)
+      await loadAuthenticatedUser()
 
-      toast.success(response.data.message)
+      toast.success('Google login successful.')
 
       navigate('/')
     } catch (error) {
@@ -90,6 +103,8 @@ function Login() {
         'Google login failed. Please try again.'
 
       toast.error(message)
+
+      setUser(null)
     } finally {
       setGoogleLoading(false)
     }
@@ -104,10 +119,8 @@ function Login() {
       <section className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl items-center justify-center">
         <div className="grid w-full overflow-hidden rounded-[2rem] border border-[#e5ded5] bg-white shadow-[0_25px_70px_rgba(23,32,51,0.10)] lg:grid-cols-[0.9fr_1.1fr]">
 
-          {/* Left panel */}
           <div className="relative hidden overflow-hidden bg-[#172033] p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
 
-            {/* Decorative shapes */}
             <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border-[28px] border-[#c8875b]/30" />
             <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-[#78917c]/20" />
             <div className="absolute right-12 top-1/2 h-3 w-3 rounded-full bg-[#e1a56f]" />
@@ -153,10 +166,8 @@ function Login() {
             </div>
           </div>
 
-          {/* Right panel */}
           <div className="px-6 py-10 sm:px-10 sm:py-12 lg:px-12 xl:px-16 xl:py-14">
 
-            {/* Mobile brand */}
             <div className="mb-10 flex items-center justify-center gap-3 lg:hidden">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#e1a56f] text-lg font-bold text-[#172033]">
                 S
