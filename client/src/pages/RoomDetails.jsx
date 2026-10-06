@@ -35,7 +35,7 @@ function RoomDetails() {
         setLoading(true)
 
         const response = await axios.get(
-          `http://localhost:5000/api/rooms/${id}`
+          `${import.meta.env.VITE_API_URL}/api/rooms/${id}`
         )
 
         setRoom(response.data.room)
@@ -105,7 +105,7 @@ function RoomDetails() {
       setBookingLoading(true)
 
       const response = await axios.post(
-        'http://localhost:5000/api/bookings',
+        `${import.meta.env.VITE_API_URL}/api/bookings`,
         {
           roomId: id,
           date: bookingData.date,
@@ -169,7 +169,7 @@ function RoomDetails() {
       setDeleteLoading(true)
 
       const response = await axios.delete(
-        `http://localhost:5000/api/rooms/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/rooms/${id}`,
         {
           withCredentials: true,
         }

@@ -19,7 +19,7 @@ function MyBookings() {
         setError('')
 
         const response = await axios.get(
-          'http://localhost:5000/api/bookings/my-bookings',
+          `${import.meta.env.VITE_API_URL}/api/bookings/my-bookings`,
           {
             withCredentials: true,
           }
@@ -67,7 +67,7 @@ function MyBookings() {
       setCancellingId(bookingId)
 
       await axios.patch(
-        `http://localhost:5000/api/bookings/${bookingId}/cancel`,
+        `${import.meta.env.VITE_API_URL}/api/bookings/${bookingId}/cancel`,
         {},
         {
           withCredentials: true,
