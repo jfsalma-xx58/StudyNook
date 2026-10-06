@@ -36,6 +36,20 @@ app.use(
 app.use(express.json())
 app.use(cookieParser())
 
+// Make sure the database is connected before handling requests.
+app.use(async (req, res, next) => {
+  try {
+    await connectDB()
+    next()
+  } catch (error) {
+    console.error('Request database connection failed:', error)
+
+    res.status(500).json({
+      message: 'Database connection failed.',
+    })
+  }
+})
+
 app.get('/', (req, res) => {
   res.send('StudyNook server is running!')
 })
