@@ -17,12 +17,15 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5175',
+  process.env.CLIENT_URL,
+].filter(Boolean)
+
 app.use(
   cors({
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:5175',
-    ],
+    origin: allowedOrigins,
     credentials: true,
   })
 )
@@ -65,16 +68,21 @@ app.use('/api/auth', authRoutes)
 app.use('/api/bookings', bookingRoutes)
 app.use('/api/rooms', roomRoutes)
 
-async function startServer() {
+async function initializeDatabase() {
   try {
     await connectDB()
-
-    app.listen(PORT, () => {
-      console.log(`StudyNook server running on port ${PORT}`)
-    })
+    console.log('StudyNook database connection ready.')
   } catch (error) {
-    console.error('Failed to start StudyNook server:', error)
+    console.error('Failed to connect to StudyNook database:', error)
   }
 }
 
-startServer()
+initializeDatabase()
+
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`StudyNook server running on port ${PORT}`)
+  })
+}
+
+module.exports = app

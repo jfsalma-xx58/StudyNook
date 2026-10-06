@@ -20,10 +20,12 @@ function createToken(userId) {
 }
 
 function setAuthCookie(res, token) {
+  const isProduction = process.env.NODE_ENV === 'production'
+
   res.cookie('token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   })
 }
@@ -121,7 +123,6 @@ async function login(req, res) {
       })
     }
 
-    // Google-only accounts do not have a password.
     if (!user.password) {
       return res.status(400).json({
         message:
@@ -267,10 +268,12 @@ async function googleLogin(req, res) {
 }
 
 async function logout(req, res) {
+  const isProduction = process.env.NODE_ENV === 'production'
+
   res.clearCookie('token', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
   })
 
   res.json({
