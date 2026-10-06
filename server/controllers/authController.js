@@ -20,12 +20,11 @@ function createToken(userId) {
 }
 
 function setAuthCookie(res, token) {
-  const isProduction = process.env.NODE_ENV === 'production'
-
   res.cookie('token', token, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    secure: true,
+    sameSite: 'none',
+    path: '/',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   })
 }
@@ -268,12 +267,11 @@ async function googleLogin(req, res) {
 }
 
 async function logout(req, res) {
-  const isProduction = process.env.NODE_ENV === 'production'
-
   res.clearCookie('token', {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    secure: true,
+    sameSite: 'none',
+    path: '/',
   })
 
   res.json({
