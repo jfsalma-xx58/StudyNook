@@ -28,19 +28,6 @@ function Login() {
     }))
   }
 
-  async function loadAuthenticatedUser() {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}/api/auth/me`,
-      {
-        withCredentials: true,
-      }
-    )
-
-    setUser(response.data.user)
-
-    return response.data.user
-  }
-
   async function handleSubmit(event) {
     event.preventDefault()
 
@@ -60,7 +47,7 @@ function Login() {
         }
       )
 
-      await loadAuthenticatedUser()
+      setUser(response.data.user)
 
       toast.success(response.data.message)
 
@@ -82,7 +69,7 @@ function Login() {
     try {
       setGoogleLoading(true)
 
-      await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/google`,
         {
           credential: credentialResponse.credential,
@@ -92,9 +79,9 @@ function Login() {
         }
       )
 
-      await loadAuthenticatedUser()
+      setUser(response.data.user)
 
-      toast.success('Google login successful.')
+      toast.success(response.data.message)
 
       navigate('/')
     } catch (error) {
