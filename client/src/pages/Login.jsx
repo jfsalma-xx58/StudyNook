@@ -44,7 +44,7 @@ function Login() {
       setLoading(true)
 
       const response = await axios.post(
-        `/api/auth/login`,
+        '/api/auth/login',
         formData,
         {
           withCredentials: true,
@@ -74,7 +74,7 @@ function Login() {
       setGoogleLoading(true)
 
       const response = await axios.post(
-        `/api/auth/google`,
+        '/api/auth/google',
         {
           credential: credentialResponse.credential,
         },
@@ -102,6 +102,7 @@ function Login() {
   }
 
   function handleGoogleError() {
+    setGoogleLoading(false)
     toast.error('Google login failed. Please try again.')
   }
 
