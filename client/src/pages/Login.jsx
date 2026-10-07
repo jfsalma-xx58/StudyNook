@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -19,7 +19,9 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
 
-  document.title = 'StudyNook | Login'
+  useEffect(() => {
+    document.title = 'StudyNook | Login'
+  }
 
   function handleChange(event) {
     const { name, value } = event.target
