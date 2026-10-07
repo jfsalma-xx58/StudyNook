@@ -6,11 +6,14 @@
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
 }
 
 body {
   margin: 0;
+  width: 100%;
   min-width: 320px;
+
   font-family:
     Inter,
     ui-sans-serif,
@@ -20,13 +23,21 @@ body {
     "Segoe UI",
     sans-serif;
 
-  /* Warm ivory instead of white */
   background: #f3efe8;
   color: #332f2a;
 
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Make sure the React app always fills the entire viewport */
+#root {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 button,

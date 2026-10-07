@@ -7,13 +7,18 @@ function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const [menuOpen, setMenuOpen] = useState(false)
-  const menuRef = useRef(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+
+  const profileMenuRef = useRef(null)
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(false)
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(event.target)
+      ) {
+        setProfileMenuOpen(false)
       }
     }
 
@@ -23,6 +28,10 @@ function Navbar() {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
+
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location.pathname])
 
   const isActive = (path) => {
     if (path === '/') {
@@ -42,11 +51,19 @@ function Navbar() {
   const handleLogout = async () => {
     try {
       await logout()
-      setMenuOpen(false)
+
+      setProfileMenuOpen(false)
+      setMobileMenuOpen(false)
+
       navigate('/')
     } catch (error) {
       console.error('Logout failed:', error)
     }
+  }
+
+  const handleMobileNavigation = (path) => {
+    setMobileMenuOpen(false)
+    navigate(path)
   }
 
   return (
@@ -57,6 +74,7 @@ function Navbar() {
           {/* Logo */}
           <Link
             to="/"
+            onClick={() => setMobileMenuOpen(false)}
             className="group flex items-center gap-2"
           >
             <svg
@@ -76,7 +94,6 @@ function Navbar() {
                 </clipPath>
               </defs>
 
-              {/* Chunky sparkle - terracotta half */}
               <path
                 d="M16 1.5
                    L19.1 11.9
@@ -91,7 +108,6 @@ function Navbar() {
                 clipPath="url(#navbar-sparkle-left)"
               />
 
-              {/* Chunky sparkle - navy half */}
               <path
                 d="M16 1.5
                    L19.1 11.9
@@ -182,14 +198,16 @@ function Navbar() {
               </>
             ) : (
               <div
-                ref={menuRef}
+                ref={profileMenuRef}
                 className="relative"
               >
                 <button
                   type="button"
-                  onClick={() => setMenuOpen((prev) => !prev)}
+                  onClick={() =>
+                    setProfileMenuOpen((prev) => !prev)
+                  }
                   className={`flex items-center gap-2 rounded-full border px-2 py-1.5 transition duration-200 ${
-                    menuOpen
+                    profileMenuOpen
                       ? 'border-[#78917c] bg-[#edf2ea]'
                       : 'border-[#e5dfd7] bg-white hover:border-[#78917c] hover:bg-[#edf2ea]'
                   }`}
@@ -215,7 +233,7 @@ function Navbar() {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className={`mr-1 h-4 w-4 text-[#697385] transition-transform duration-200 ${
-                      menuOpen ? 'rotate-180' : ''
+                      profileMenuOpen ? 'rotate-180' : ''
                     }`}
                   >
                     <path
@@ -223,12 +241,11 @@ function Navbar() {
                       stroke="currentColor"
                       strokeWidth="1.6"
                       strokeLinecap="round"
-                      strokeLinejoin="round"
                     />
                   </svg>
                 </button>
 
-                {menuOpen && (
+                {profileMenuOpen && (
                   <div className="absolute right-0 mt-3 w-56 overflow-hidden rounded-2xl border border-[#e5dfd7] bg-white p-2 shadow-[0_20px_50px_rgba(23,32,51,0.12)]">
                     <div className="border-b border-[#eee9e3] px-3 py-3">
                       <p className="truncate text-sm font-bold text-[#172033]">
@@ -242,7 +259,7 @@ function Navbar() {
 
                     <Link
                       to="/my-listings"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={() => setProfileMenuOpen(false)}
                       className="mt-1 block rounded-xl px-3 py-2.5 text-sm font-semibold text-[#4b5563] transition duration-200 hover:bg-[#edf2ea] hover:text-[#172033]"
                     >
                       My Listings
@@ -250,7 +267,7 @@ function Navbar() {
 
                     <Link
                       to="/my-bookings"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={() => setProfileMenuOpen(false)}
                       className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-[#4b5563] transition duration-200 hover:bg-[#edf2ea] hover:text-[#172033]"
                     >
                       My Bookings
@@ -272,11 +289,14 @@ function Navbar() {
           {/* Mobile Menu Button */}
           <button
             type="button"
-            onClick={() => setMenuOpen((prev) => !prev)}
+            onClick={() =>
+              setMobileMenuOpen((prev) => !prev)
+            }
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#e5dfd7] bg-white text-[#172033] transition duration-200 hover:bg-[#edf2ea] md:hidden"
             aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
           >
-            {menuOpen ? (
+            {mobileMenuOpen ? (
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -306,84 +326,93 @@ function Navbar() {
               </svg>
             )}
           </button>
-
         </div>
 
         {/* Mobile Navigation */}
-        {menuOpen && (
+        {mobileMenuOpen && (
           <div className="border-t border-[#e5dfd7] py-4 md:hidden">
             <nav className="flex flex-col gap-1">
 
-              <Link
-                to="/"
-                onClick={() => setMenuOpen(false)}
-                className={navLinkClass('/')}
+              <button
+                type="button"
+                onClick={() => handleMobileNavigation('/')}
+                className={`${navLinkClass('/')} text-left`}
               >
                 Home
-              </Link>
+              </button>
 
-              <Link
-                to="/rooms"
-                onClick={() => setMenuOpen(false)}
-                className={navLinkClass('/rooms')}
+              <button
+                type="button"
+                onClick={() => handleMobileNavigation('/rooms')}
+                className={`${navLinkClass('/rooms')} text-left`}
               >
                 Rooms
-              </Link>
+              </button>
 
-              <Link
-                to="/about"
-                onClick={() => setMenuOpen(false)}
-                className={navLinkClass('/about')}
+              <button
+                type="button"
+                onClick={() => handleMobileNavigation('/about')}
+                className={`${navLinkClass('/about')} text-left`}
               >
                 About
-              </Link>
+              </button>
 
               {user && (
                 <>
-                  <Link
-                    to="/add-room"
-                    onClick={() => setMenuOpen(false)}
-                    className={navLinkClass('/add-room')}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleMobileNavigation('/add-room')
+                    }
+                    className={`${navLinkClass('/add-room')} text-left`}
                   >
                     Add Room
-                  </Link>
+                  </button>
 
-                  <Link
-                    to="/my-listings"
-                    onClick={() => setMenuOpen(false)}
-                    className={navLinkClass('/my-listings')}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleMobileNavigation('/my-listings')
+                    }
+                    className={`${navLinkClass('/my-listings')} text-left`}
                   >
                     My Listings
-                  </Link>
+                  </button>
 
-                  <Link
-                    to="/my-bookings"
-                    onClick={() => setMenuOpen(false)}
-                    className={navLinkClass('/my-bookings')}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleMobileNavigation('/my-bookings')
+                    }
+                    className={`${navLinkClass('/my-bookings')} text-left`}
                   >
                     My Bookings
-                  </Link>
+                  </button>
                 </>
               )}
 
               <div className="mt-3 border-t border-[#e5dfd7] pt-3">
                 {!user ? (
                   <div className="flex gap-2">
-                    <Link
-                      to="/login"
-                      onClick={() => setMenuOpen(false)}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleMobileNavigation('/login')
+                      }
                       className="flex-1 rounded-full border border-[#ddd6cd] bg-white px-4 py-2.5 text-center text-sm font-semibold text-[#4b5563] transition duration-200 hover:bg-[#edf2ea] hover:text-[#172033]"
                     >
                       Login
-                    </Link>
+                    </button>
 
-                    <Link
-                      to="/register"
-                      onClick={() => setMenuOpen(false)}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleMobileNavigation('/register')
+                      }
                       className="flex-1 rounded-full bg-[#c8875b] px-4 py-2.5 text-center text-sm font-bold text-white transition duration-200 hover:bg-[#b6734d]"
                     >
                       Get Started
-                    </Link>
+                    </button>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -425,7 +454,6 @@ function Navbar() {
             </nav>
           </div>
         )}
-
       </div>
     </header>
   )
