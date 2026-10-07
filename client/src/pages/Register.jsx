@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEfect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -15,7 +15,9 @@ function Register() {
 
   const [loading, setLoading] = useState(false)
 
-  document.title = 'StudyNook | Register'
+  useEffect(() => {
+    document.title = 'StudyNook | Register'
+  }, [])
 
   function handleChange(event) {
     const { name, value } = event.target
