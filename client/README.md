@@ -1,16 +1,34 @@
-# React + Vite
+# StudyNook (Client)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+StudyNook is a study room booking app where users can browse rooms, book hourly slots, and manage their own listings.
 
-Currently, two official plugins are available:
+**Live site:** https://study-nook-yxp1.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
+- React + Vite
+- Tailwind CSS
+- React Router
+- Axios
+- Google OAuth (@react-oauth/google)
 
-## React Compiler
+## Features
+- Email/password and Google login
+- Browse and filter study rooms
+- Book rooms by the hour
+- Add, edit, and delete your own room listings
+- View and cancel your bookings
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run Locally
+1. Install dependencies:
+   ```
+   npm install
+   ```
+2. Start the dev server:
+   ```
+   npm run dev
+   ```
 
-## Expanding the ESLint configuration
+The dev server proxies `/api` requests to the backend at `http://localhost:5000`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Deployment
+Deployed on Vercel. `vercel.json` rewrites `/api/*` to the backend so login cookies work on mobile browsers.
