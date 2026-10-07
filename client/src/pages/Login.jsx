@@ -258,6 +258,7 @@ function Login() {
                       text="continue_with"
                       shape="rectangular"
                       width="360"
+                      locale="en"
                     />
                   )}
                 </div>
