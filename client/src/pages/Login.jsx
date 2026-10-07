@@ -21,7 +21,7 @@ function Login() {
 
   useEffect(() => {
     document.title = 'StudyNook | Login'
-  }
+  }, [])
 
   function handleChange(event) {
     const { name, value } = event.target
