@@ -19,7 +19,7 @@ function MyBookings() {
         setError('')
 
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/bookings/my-bookings`,
+          `/api/bookings/my-bookings`,
           {
             withCredentials: true,
           }
@@ -67,7 +67,7 @@ function MyBookings() {
       setCancellingId(bookingId)
 
       await axios.patch(
-        `${import.meta.env.VITE_API_URL}/api/bookings/${bookingId}/cancel`,
+        `/api/bookings/${bookingId}/cancel`,
         {},
         {
           withCredentials: true,

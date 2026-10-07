@@ -11,7 +11,7 @@ function AuthProvider({ children }) {
     async function loadUser() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/auth/me`,
+          `/api/auth/me`,
           {
             withCredentials: true,
           }
@@ -31,7 +31,7 @@ function AuthProvider({ children }) {
   async function logout() {
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/logout`,
+        `/api/auth/logout`,
         {},
         {
           withCredentials: true,

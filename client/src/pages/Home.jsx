@@ -14,7 +14,7 @@ function Home() {
     async function fetchLatestRooms() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/rooms/latest`
+          `/api/rooms/latest`
         )
 
         setRooms(response.data.rooms)

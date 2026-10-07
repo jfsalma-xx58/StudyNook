@@ -19,7 +19,7 @@ function MyListings() {
     async function fetchMyRooms() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/rooms/my-rooms`,
+          `/api/rooms/my-rooms`,
           {
             withCredentials: true,
           }
@@ -64,7 +64,7 @@ function MyListings() {
       setDeleting(true)
 
       const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/rooms/${roomToDelete._id}`,
+        `/api/rooms/${roomToDelete._id}`,
         {
           withCredentials: true,
         }

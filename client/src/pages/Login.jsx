@@ -40,7 +40,7 @@ function Login() {
       setLoading(true)
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        `/api/auth/login`,
         formData,
         {
           withCredentials: true,
@@ -70,7 +70,7 @@ function Login() {
       setGoogleLoading(true)
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/google`,
+        `/api/auth/google`,
         {
           credential: credentialResponse.credential,
         },

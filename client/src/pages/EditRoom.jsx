@@ -35,7 +35,7 @@ function EditRoom() {
     async function fetchRoom() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/rooms/${id}`
+          `/api/rooms/${id}`
         )
 
         const room = response.data.room
@@ -95,7 +95,7 @@ function EditRoom() {
       setSaving(true)
 
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/api/rooms/${id}`,
+        `/api/rooms/${id}`,
         {
           ...formData,
           amenities,
