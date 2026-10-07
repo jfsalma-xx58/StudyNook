@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { GoogleLogin } from '@react-oauth/google'
@@ -7,6 +7,8 @@ import { useAuth } from '../context/AuthContext'
 
 function Login() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const redirectTo = location.state?.from?.pathname || '/'
   const { setUser } = useAuth()
 
   const [formData, setFormData] = useState({
@@ -51,7 +53,7 @@ function Login() {
 
       toast.success(response.data.message)
 
-      navigate('/')
+      navigate(redirectTo, { replace: true })
     } catch (error) {
       const message =
         error.response?.data?.message ||
@@ -83,7 +85,7 @@ function Login() {
 
       toast.success(response.data.message)
 
-      navigate('/')
+      navigate(redirectTo, { replace: true })
     } catch (error) {
       const message =
         error.response?.data?.message ||
